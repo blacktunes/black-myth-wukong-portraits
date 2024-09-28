@@ -1,0 +1,44 @@
+{
+  "name": "portraits",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite --port 9002 --host",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "preview": "vite preview",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "format": "prettier --write src/"
+  },
+  "dependencies": {
+    "@ckpack/parameter": "^2.9.0",
+    "mitt": "^3.0.1",
+    "star-rail-vue": "^1.3.7",
+    "vue": "^3.5.4",
+    "vue-dompurify-html": "^5.1.0"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.10.4",
+    "@tsconfig/node18": "^18.2.4",
+    "@types/node": "^18.19.50",
+    "@vitejs/plugin-vue": "^5.1.3",
+    "@vitejs/plugin-vue-jsx": "^3.1.0",
+    "@vue/eslint-config-prettier": "^9.0.0",
+    "@vue/eslint-config-typescript": "^13.0.0",
+    "@vue/tsconfig": "^0.5.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.28.0",
+    "npm-run-all2": "^6.2.2",
+    "prettier": "^3.3.3",
+    "prettier-plugin-stylus-format": "^1.0.1",
+    "stylus": "^0.63.0",
+    "typescript": "^5.6.2",
+    "unplugin-auto-import": "^0.17.8",
+    "vite": "^5.4.4",
+    "vite-plugin-pwa": "^0.19.8",
+    "vite-plugin-vue-devtools": "^7.4.4",
+    "vue-tsc": "^2.1.6"
+  }
+}

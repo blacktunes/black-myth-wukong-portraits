@@ -1,0 +1,50 @@
+:root
+  --text-color #c8c7c6
+
+@keyframes first
+  from
+    filter blur(10px)
+    opacity 0
+
+html
+  font-size 36px
+  animation first 0.5s
+
+body
+  margin 0
+  background-color #000
+
+  &::-webkit-scrollbar
+    width 0px
+    height 0px
+
+*
+  user-select none
+  -webkit-user-drag none
+  user-drag none
+
+::-webkit-scrollbar
+  width 0px
+  height 0px
+
+.hover
+  &:hover
+    filter brightness(1.3)
+
+.ellipsis
+  overflow hidden
+  text-overflow ellipsis
+  white-space nowrap
+
+.fade-in-enter-active
+  transition all 0.2s
+
+.fade-in-enter-from
+  opacity 0
+
+@keyframes backdrop-filter
+  from
+    backdrop-filter blur(0px)
+
+  to
+    backdrop-filter blur(10px)
