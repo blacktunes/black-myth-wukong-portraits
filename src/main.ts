@@ -10,8 +10,7 @@ import { showFirstItem } from './assets/scripts/portraits'
 import { updateCheck } from './assets/scripts/update'
 
 if (import.meta.env.MODE === 'production') {
-  // TODO
-  analytics('G-4MMBK9RWHE')
+  analytics('G-10B19F2P0B')
 }
 
 createApp(App)

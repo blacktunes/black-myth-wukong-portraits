@@ -85,7 +85,7 @@ const menu: (
   {
     type: 'link',
     name: '代码',
-    link: 'https://github.com/blacktunes/https://github.com/blacktunes/black-myth-wukong-portraits'
+    link: 'https://github.com/blacktunes/black-myth-wukong-portraits'
   },
   {
     type: 'other',
