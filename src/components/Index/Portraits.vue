@@ -133,7 +133,7 @@ import { Arrow } from '../Common/Icon'
 import Keyboard from '../Common/Keyboard.vue'
 
 const height = computed(() => {
-  if (!state.group) return
+  if (!state.group || !list.value[state.group]) return
   return `${list.value[state.group].length * 90 + 25}px`
 })
 
