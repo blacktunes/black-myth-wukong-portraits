@@ -1,6 +1,29 @@
+import log from '@/assets/data/log'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import type { WatchStopHandle } from 'vue'
 import { popupManager } from './popup'
+
+export const logCheck = (key: string, time?: string | number) => {
+  return new Promise<void>((resolve) => {
+    if (!time) return
+    const lastUpdate = new Date(time).getTime()
+    const localLastUpdate = localStorage.getItem(key)
+    if (localLastUpdate === null) {
+      localStorage.setItem(key, JSON.stringify(lastUpdate))
+      return
+    }
+    if (lastUpdate) {
+      if (lastUpdate > Number(localLastUpdate)) {
+        resolve()
+        localStorage.setItem(key, JSON.stringify(lastUpdate))
+      }
+    }
+  })
+}
+
+export const initLog = () => {
+  logCheck('wukong-portraits-update', log[0]?.time).then(() => popupManager.open('log'))
+}
 
 const { needRefresh, updateServiceWorker } = useRegisterSW()
 
