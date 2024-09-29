@@ -1,5 +1,17 @@
 <template>
   <div class="link">
+    <div
+      class="left"
+      @click.stop="windowChange"
+    >
+      <Keyboard keyboard="A" />
+    </div>
+    <div
+      class="right"
+      @click.stop="windowChange"
+    >
+      <Keyboard keyboard="D" />
+    </div>
     <template
       v-for="(item, index) in menu"
       :key="index"
@@ -32,9 +44,11 @@
 </template>
 
 <script lang="ts" setup>
+import { windowChange } from '@/assets/scripts/hotkey'
 import { popupManager } from '@/assets/scripts/popup'
 import { startScreenshot } from '@/assets/scripts/portraits'
 import { data, state } from '@/store/data'
+import Keyboard from './Common/Keyboard.vue'
 
 const createPortrait = () => {
   popupManager
@@ -131,6 +145,17 @@ const menu: (
   background linear-gradient(to right, transparent, rgba(0, 0, 0, 0.1) 5%, transparent 95%)
   color var(--text-color)
   font-size 44px
+
+  .left
+  .right
+    position absolute
+    top -65px
+
+  .left
+    left -45px
+
+  .right
+    right -45px
 
   .sep
     width 2px

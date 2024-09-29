@@ -4,7 +4,7 @@ import { startScreenshot } from './portraits'
 
 let flag = false
 
-const windowChange = () => {
+export const windowChange = () => {
   if (state.window === 'index') {
     state.window = 'setting'
   } else {

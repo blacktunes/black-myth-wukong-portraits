@@ -1,14 +1,14 @@
 <template>
   <div class="keyboard hover">
     <div class="icon">{{ keyboard }}</div>
-    <span>{{ text }}</span>
+    <span v-if="text">{{ text }}</span>
   </div>
 </template>
 
 <script lang="ts" setup>
 defineProps<{
   keyboard: string
-  text: string
+  text?: string
 }>()
 </script>
 
