@@ -31,6 +31,7 @@
                 :class="{ select: state.ID === item.id }"
                 @mouseenter="state.ID = item.id"
                 @click="state.ID = item.id"
+                @contextmenu.stop.prevent="deleteItem(item.id)"
               >
                 <span class="ellipsis">{{ item.name }}</span>
               </div>
@@ -98,18 +99,22 @@
       />
     </div>
     <div
-      class="image"
-      :class="{ overlay: current.overlay }"
       v-if="current"
-      @click.stop="imageChange"
+      class="book"
+      :class="{ overlay: current.overlay }"
     >
-      <img
-        v-if="current.image"
-        :src="current.image"
-        alt=""
-      />
       <div
-        v-show="current.image"
+        class="image hover"
+        @click.stop="imageChange"
+      >
+        <img
+          v-if="current.image"
+          :src="current.image"
+          alt=""
+        />
+      </div>
+      <div
+        v-show="current.image && !state.screenshot"
         class="change"
         @click.stop="current.overlay = !current.overlay"
       >
@@ -123,7 +128,7 @@
 import { emitter } from '@/assets/scripts/event'
 import { createScreenshot } from '@/assets/scripts/file'
 import { popupManager } from '@/assets/scripts/popup'
-import { current, list, state } from '@/store/data'
+import { current, data, list, state } from '@/store/data'
 import { Arrow } from '../Common/Icon'
 import Keyboard from '../Common/Keyboard.vue'
 
@@ -204,6 +209,18 @@ const onTextClick = () => {
     .then((text) => {
       if (text !== null) current.value!.text = text
     })
+}
+
+const deleteItem = (id: number) => {
+  const index = data.list.findIndex((item) => item.id === id)
+  if (id !== -1) {
+    popupManager.open('confirm', {
+      text: ['是否删除该影神图？'],
+      fn: () => {
+        data.list.splice(index, 1)
+      }
+    })
+  }
 }
 
 const imageChange = () => {
@@ -410,49 +427,59 @@ item_select()
   .overlay
     mix-blend-mode overlay
 
-  .image
+  .book
     position absolute
-    top 420px
-    right 640px
+    top 235px
+    left 1820px
     box-sizing border-box
-    width 675px
-    height 1070px
-    border 10px solid transparent
-    border-radius 5px
-    transition border-color 0.2s
-    transform rotate(5deg) skew(-2deg, 2deg)
+    width 850px
+    height 1500px
+    transform rotate(5deg) skew(-4.5deg, 0deg)
 
     &:hover
-      border-color #3b2916
-
       .change
-        opacity 1
+        mask-position 0 0
 
-    img
-      width 100%
-      height 100%
-      object-fit cover
+    .image
+      position absolute
+      top 145px
+      left 20px
+      box-sizing border-box
+      width 800px
+      height 1180px
+      border-radius 5px
+      transition 0.2s
+      clip-path polygon(0 0, 0 1140px, 100% 100%, 735px 0)
+
+      img
+        width 100%
+        height 100%
+        object-fit cover
 
     .change
       position absolute
-      bottom -8px
-      left -8px
+      bottom 40px
+      left 50%
       display flex
       justify-content center
       align-items center
-      box-sizing border-box
-      width 200px
-      height 100px
-      border 8px solid #3b2916
-      color #1f150a
+      width 500px
+      height 130px
+      background url('@/assets/images/毛笔按钮.webp')
+      background-size 100% 100%
       font-weight bold
-      font-size 50px
-      opacity 0
-      transition 0.1s
+      font-size 40px
+      opacity 0.95
+      transition 0.3s
+      transform translateX(-50%) rotate(3deg)
+      mask-image linear-gradient(to right, #000, #000, 50%, transparent 60%)
+      mask-size 200% 100%
+      mask-position 115% 0
+      mask-repeat no-repeat
 
-      &:hover
-        background rgba(255, 255, 255, 0.1)
-        opacity 1
+      span
+        color var(--text-color)
+        transform translate(-10px, 5px)
 
 .left-enter-active
 .left-leave-active
