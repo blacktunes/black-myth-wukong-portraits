@@ -112,7 +112,7 @@ callback.confirm = onConfirmlClick
     background-size cover
 
     .title
-      padding-top 30px
+      padding 30px
       text-align center
       font-size 76px
 

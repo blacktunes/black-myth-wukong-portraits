@@ -110,7 +110,8 @@ const close = () => {
     width 1300px
     height 1600px
     border-radius 5px
-    background rgba(0, 0, 0, 0.7)
+    background url('@/assets/images/提示背景.webp')
+    background-size cover
     text-align center
 
     .title
