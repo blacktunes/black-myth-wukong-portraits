@@ -21,8 +21,9 @@
         v-if="index > 0"
       ></div>
       <div
-        class="btn"
         v-if="item.type === 'link'"
+        class="btn"
+        :title="item.tip"
       >
         <a
           :href="item.link"
@@ -35,6 +36,7 @@
         v-else
         class="btn"
         :class="{ highlight: item.key === state.window }"
+        :title="item.tip"
         @click.stop="item.fn"
       >
         <span>{{ item.name }}</span>
@@ -78,37 +80,44 @@ const createPortrait = () => {
     })
 }
 
+interface MenuBase {
+  name: string
+  tip?: string
+}
+
 const menu: (
-  | {
+  | (MenuBase & {
       type: 'link'
-      name: string
       link: string
-    }
-  | {
+    })
+  | (MenuBase & {
       type: 'other'
-      name: string
       key?: string
       fn?: () => void
-    }
+    })
 )[] = [
   {
     type: 'link',
     name: '作者',
+    tip: 'Bilibili',
     link: 'https://space.bilibili.com/1384118'
   },
   {
     type: 'link',
     name: '代码',
+    tip: 'Github',
     link: 'https://github.com/blacktunes/black-myth-wukong-portraits'
   },
   {
     type: 'other',
     name: '拓印',
+    tip: '保存影神图',
     fn: startScreenshot
   },
   {
     type: 'other',
     name: '编撰',
+    tip: '编写影神图',
     fn: createPortrait
   },
   {
