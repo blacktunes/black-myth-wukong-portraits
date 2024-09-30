@@ -1,50 +1,41 @@
 <template>
-  <Transition
-    name="fade"
-    :duration="{ enter: 200, leave: 20 }"
+  <Window
+    :index
+    @close="close"
   >
-    <div
-      class="confirm"
-      v-if="props.index !== -1"
-      :style="{ zIndex: 10 + index }"
-      @click.stop="close"
-    >
-      <div
-        class="box"
-        @click.stop
-      >
-        <div class="text">
-          <div
-            v-for="(text, index) in data.text"
-            :key="index"
-            v-html="text"
-          ></div>
-        </div>
-        <div class="footer">
+    <div class="confirm">
+      <div class="text">
+        <div
+          v-for="(text, index) in data.text"
+          :key="index"
+          v-html="text"
+        ></div>
+      </div>
+      <div class="footer">
+        <Btn
+          v-if="!data.fn"
+          name="了解"
+          @click="close"
+        />
+        <template v-else>
           <Btn
-            v-if="!data.fn"
-            name="了解"
+            name="确认"
+            @click="onConfirml"
+          />
+          <Btn
+            name="取消"
             @click="close"
           />
-          <template v-else>
-            <Btn
-              name="确认"
-              @click="onConfirml"
-            />
-            <Btn
-              name="取消"
-              @click="close"
-            />
-          </template>
-        </div>
+        </template>
       </div>
     </div>
-  </Transition>
+  </Window>
 </template>
 
 <script lang="ts" setup>
 import Btn from '@/components/Common/Btn.vue'
 import { callback, data } from './data'
+import Window from '@/components/Common/Window.vue'
 
 const props = defineProps<{
   name: string
@@ -70,34 +61,22 @@ callback.confirm = onConfirml
 
 <style lang="stylus" scoped>
 .confirm
-  position absolute
   display flex
-  justify-content center
-  align-items center
-  background rgba(0, 0, 0, 0.2)
-  font-size 50px
-  animation backdrop-filter 1s ease-in forwards
-  inset 0
+  flex-direction column
+  justify-content space-around
+  min-height 400px
+  width 1400px
 
-  .box
+  .text
     display flex
+    flex 1
     flex-direction column
-    justify-content space-around
-    min-height 400px
-    width 1400px
-    background url('@/assets/images/提示背景.webp')
-    background-size cover
+    justify-content center
+    align-items center
+    color #949393
+    text-align center
+    gap 10px
 
-    .text
-      display flex
-      flex 1
-      flex-direction column
-      justify-content center
-      align-items center
-      color #949393
-      text-align center
-      gap 10px
-
-    .footer
-      display flex
+  .footer
+    display flex
 </style>
