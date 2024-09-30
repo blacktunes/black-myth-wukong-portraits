@@ -48,18 +48,7 @@ export const list = computed(() => {
 export const data = reactive<{
   list: Portrait[]
 }>({
-  list: [
-    {
-      id: Date.now(),
-      name: '咸鱼',
-      type: '小妖',
-      info: '咸鱼咸，咸鱼咸，咸鱼咸鱼咸。\n咕咕咕，咕咕咕，咕咕咕咕咕。',
-      text: '所以到底是咸鱼还是鸽子？\n不知道，鸽了。',
-      overlay: true,
-      time: Date.now(),
-      image: defaultImage
-    }
-  ]
+  list: []
 })
 
 setLocalStorage(setting, 'wukong-portraits-setting')

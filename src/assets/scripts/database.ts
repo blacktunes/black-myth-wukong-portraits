@@ -1,4 +1,6 @@
+import defaultImage from '@/assets/images/default.webp'
 import { data } from '@/store/data'
+import { KEY } from '@/store/setting'
 import { createDatabase } from 'star-rail-vue'
 import { popupManager } from './popup'
 
@@ -24,7 +26,19 @@ export const loadDatabase = () => {
       .add({
         data: data,
         key: 'list',
-        name: 'portraits'
+        name: 'portraits',
+        initial: [
+          {
+            id: Date.now(),
+            name: '咸鱼',
+            type: '小妖',
+            info: '咸鱼咸，咸鱼咸，咸鱼咸鱼咸。\n咕咕咕，咕咕咕，咕咕咕咕咕。',
+            text: '所以到底是咸鱼还是鸽子？\n不知道，鸽了。',
+            overlay: true,
+            time: Date.now(),
+            image: defaultImage
+          }
+        ]
       })
       .next()
       .then(() => {

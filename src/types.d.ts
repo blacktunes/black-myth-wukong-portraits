@@ -8,14 +8,3 @@ interface Portrait {
   overlay?: boolean
   time: number
 }
-
-interface LogData {
-  time: string
-  text: {
-    text: string
-    info?: string | string[]
-    author?: string
-    url?: string
-    highlight?: boolean
-  }[]
-}
