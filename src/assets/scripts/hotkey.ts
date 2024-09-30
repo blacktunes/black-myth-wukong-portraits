@@ -53,6 +53,10 @@ export const hotkey = () => {
         if (popupManager.hasPopup()) return
         if (state.window === 'index') state.expand = !state.expand
         return
+      case 'Delete':
+        if (popupManager.hasPopup() || state.window === 'setting' || !current.value) return
+        deleteItem(current.value.id)
+        return
       case 'Enter':
         popupManager.currentComponentConfirm()
         return
