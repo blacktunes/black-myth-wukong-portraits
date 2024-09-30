@@ -1,4 +1,5 @@
 import log from '@/assets/data/log'
+import { KEY } from '@/store/setting'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import type { WatchStopHandle } from 'vue'
 import { popupManager } from './popup'
@@ -22,7 +23,7 @@ export const logCheck = (key: string, time?: string | number) => {
 }
 
 export const initLog = () => {
-  logCheck('wukong-portraits-update', log[0]?.time).then(() => popupManager.open('log'))
+  logCheck(KEY.UPDATE_KEY, log[0]?.time).then(() => popupManager.open('log'))
 }
 
 const { needRefresh, updateServiceWorker } = useRegisterSW()

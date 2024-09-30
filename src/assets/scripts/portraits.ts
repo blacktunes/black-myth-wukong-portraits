@@ -1,5 +1,7 @@
-import { list, state } from '@/store/data'
+import { data, list } from '@/store/data'
+import { state } from '@/store/setting'
 import { emitter } from './event'
+import { popupManager } from './popup'
 
 export const startScreenshot = () => {
   if (state.window !== 'index') {
@@ -12,9 +14,23 @@ export const startScreenshot = () => {
 }
 
 export const showFirstItem = () => {
-  for (const i in list.value) {
-    state.group = i
-    state.ID = list.value[state.group][0].id
-    break
+  for (const group of list.value.entries()) {
+    if (group[1].length > 0) {
+      state.group = group[0]
+      state.ID = group[1][0].id
+      break
+    }
+  }
+}
+
+export const deleteItem = (id: number) => {
+  const index = data.list.findIndex((item) => item.id === id)
+  if (id !== -1) {
+    popupManager.open('confirm', {
+      text: ['是否删除该影神图？'],
+      fn: () => {
+        data.list.splice(index, 1)
+      }
+    })
   }
 }

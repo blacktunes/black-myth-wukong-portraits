@@ -13,7 +13,7 @@
 
 <script lang="ts" setup>
 import { importFile } from '@/assets/scripts/file'
-import { state } from '@/store/data'
+import { state } from '@/store/setting'
 import Portraits from './Index/Portraits.vue'
 import Setting from './Index/Setting.vue'
 

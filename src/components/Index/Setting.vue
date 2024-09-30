@@ -62,10 +62,11 @@
 </template>
 
 <script lang="ts" setup>
-import { Accept, inputFile } from '@/assets/scripts/file'
+import { exportFile, inputFile } from '@/assets/scripts/file'
 import { popupManager } from '@/assets/scripts/popup'
-import { data, setting } from '@/store/data'
-import { countStrToSize, createDownloadFile } from 'star-rail-vue'
+import { data } from '@/store/data'
+import { setting } from '@/store/setting'
+import { countStrToSize } from 'star-rail-vue'
 import { Arrow } from '../Common/Icon'
 const getValue = unref
 
@@ -89,14 +90,8 @@ const qualityChange = () => {
 const isEmpty = computed(() => data.list.length < 1)
 
 const exportData = () => {
-  const blob = createDownloadFile(data.list)
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `影神图 - ${new Date().toLocaleString()}${Accept}`
-  a.click()
-  a.remove()
-  URL.revokeObjectURL(url)
+  if (isEmpty.value) return
+  exportFile()
 }
 
 const deleteData = () => {
@@ -175,7 +170,7 @@ const menu: {
       {
         type: 'click',
         key: '导入数据',
-        info: '将影神图列表文件(.wukong)或由该网站生成的影神图图片导入。',
+        info: '将影神图列表文件(.wukong)或由该网站生成的影神图图片中的数据导入。',
         value: '点击导入',
         fn: inputFile
       },

@@ -12,21 +12,21 @@
         <div class="list">
           <div
             class="group"
-            v-for="(group, key) in list"
-            :key="key"
-            :class="{ 'group-expand': state.group === key }"
+            v-for="group in list"
+            :key="group[0]"
+            :class="{ 'group-expand': state.group === group[0] }"
           >
             <div
               class="label"
-              @click.stop="onLabelClick(key)"
+              @click.stop="onLabelClick(group[0])"
             >
-              <span class="ellipsis">{{ key }}</span>
-              <Arrow />
+              <span class="ellipsis">{{ group[0] }}</span>
+              <Arrow v-show="group[1].length > 0" />
             </div>
             <div class="item-list">
               <div
                 class="item"
-                v-for="item in group"
+                v-for="item in group[1]"
                 :key="item.id"
                 :class="{ select: state.ID === item.id }"
                 @mouseenter="state.ID = item.id"
@@ -128,13 +128,15 @@
 import { emitter } from '@/assets/scripts/event'
 import { createScreenshot } from '@/assets/scripts/file'
 import { popupManager } from '@/assets/scripts/popup'
-import { current, data, list, state } from '@/store/data'
+import { deleteItem } from '@/assets/scripts/portraits'
+import { current, list } from '@/store/data'
+import { state } from '@/store/setting'
 import { Arrow } from '../Common/Icon'
 import Keyboard from '../Common/Keyboard.vue'
 
 const height = computed(() => {
-  if (!state.group || !list.value[state.group]) return
-  return `${list.value[state.group].length * 90 + 25}px`
+  if (!state.group || !list.value.has(state.group)) return
+  return `${list.value.get(state.group)!.length * 90 + 25}px`
 })
 
 const infoDom = ref<HTMLElement | null>(null)
@@ -159,6 +161,7 @@ const dom = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   emitter.on('screenshot', () => {
+    if (!current.value) return
     createScreenshot(dom.value)
   })
 })
@@ -167,7 +170,8 @@ onUnmounted(() => {
   emitter.off('screenshot')
 })
 
-const onLabelClick = (label: number | string) => {
+const onLabelClick = (label: string) => {
+  if (list.value.get(label)?.length === 0) return
   state.group === label ? (state.group = '') : (state.group = label)
 }
 
@@ -209,18 +213,6 @@ const onTextClick = () => {
     .then((text) => {
       if (text !== null) current.value!.text = text
     })
-}
-
-const deleteItem = (id: number) => {
-  const index = data.list.findIndex((item) => item.id === id)
-  if (id !== -1) {
-    popupManager.open('confirm', {
-      text: ['是否删除该影神图？'],
-      fn: () => {
-        data.list.splice(index, 1)
-      }
-    })
-  }
 }
 
 const imageChange = () => {
@@ -297,6 +289,7 @@ item_select()
 
         .item-list
           max-height v-bind(height)
+          opacity 1
 
       .label
         display flex
@@ -324,7 +317,8 @@ item_select()
         overflow hidden
         margin 20px 40px 0 25px
         max-height 0
-        transition max-height 0.2s
+        opacity 0
+        transition max-height 0.2s, opacity 0.2s
 
         .item
           display flex

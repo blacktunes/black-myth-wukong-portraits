@@ -49,7 +49,8 @@
 import { windowChange } from '@/assets/scripts/hotkey'
 import { popupManager } from '@/assets/scripts/popup'
 import { startScreenshot } from '@/assets/scripts/portraits'
-import { data, state } from '@/store/data'
+import { data } from '@/store/data'
+import { state } from '@/store/setting'
 import Keyboard from './Common/Keyboard.vue'
 
 const createPortrait = () => {

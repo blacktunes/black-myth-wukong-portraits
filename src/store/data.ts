@@ -1,27 +1,4 @@
-import { setLocalStorage } from 'star-rail-vue'
-import defaultImage from '@/assets/images/default.webp'
-
-export const state: {
-  ID?: number
-  group: string | number
-  expand: boolean
-  window: 'index' | 'setting'
-  screenshot: boolean
-} = reactive({
-  ID: undefined,
-  group: '',
-  expand: false,
-  window: 'index',
-  screenshot: false
-})
-
-export const setting: {
-  download: boolean
-  quality: number
-} = reactive({
-  download: true,
-  quality: 1
-})
+import { state } from './setting'
 
 export const current = computed(() => {
   const index = data.list.findIndex((item) => item.id === state.ID)
@@ -30,17 +7,21 @@ export const current = computed(() => {
 })
 
 export const list = computed(() => {
-  const _list: {
-    [type: string]: Portrait[]
-  } = {}
+  const _list: Map<string, Portrait[]> = new Map([
+    ['小妖', []],
+    ['头目', []],
+    ['妖王', []],
+    ['人物', []]
+  ])
   data.list.forEach((item) => {
-    if (!(item.type in _list)) {
-      _list[item.type] = []
+    if (!_list.has(item.type)) {
+      _list.set(item.type, [item])
+    } else {
+      _list.get(item.type)!.push(item)
     }
-    _list[item.type].push(item)
   })
-  for (const i in _list) {
-    _list[i].sort((a, b) => b.time - a.time)
+  for (const group of _list.values()) {
+    group.sort((a, b) => b.time - a.time)
   }
   return _list
 })
@@ -50,5 +31,3 @@ export const data = reactive<{
 }>({
   list: []
 })
-
-setLocalStorage(setting, 'wukong-portraits-setting')

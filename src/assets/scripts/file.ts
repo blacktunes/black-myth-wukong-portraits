@@ -1,6 +1,12 @@
-import { current, data, setting, state } from '@/store/data'
+import { current, data } from '@/store/data'
+import { KEY, setting, state } from '@/store/setting'
 import { Parameter, setLocale, zhLocale } from '@ckpack/parameter'
-import { decompressFromArrayBuffer, decompressFromZip, screenshot } from 'star-rail-vue'
+import {
+  createDownloadFile,
+  decompressFromArrayBuffer,
+  decompressFromZip,
+  screenshot
+} from 'star-rail-vue'
 import { popupManager } from './popup'
 
 const dataRule = {
@@ -26,16 +32,13 @@ const dataRule = {
   }
 }
 
-export const Accept = '.wukong'
-export const Raw = 'raw.wukong'
-
 setLocale(zhLocale)
 const parameter = new Parameter()
 
 export const inputFile = async () => {
   const el = document.createElement('input')
   el.type = 'file'
-  el.accept = `.png,${Accept}`
+  el.accept = `.png,${KEY.FILE_ACCEPT}`
   el.onchange = async () => {
     const file = el.files?.[0]
     if (file) {
@@ -48,7 +51,7 @@ export const inputFile = async () => {
 
 export const importFile = async (file: File, open?: boolean) => {
   const accept = file.name.split('.').pop()
-  if (`.${accept}` === Accept) {
+  if (`.${accept}` === KEY.FILE_ACCEPT) {
     const reader = new FileReader()
     reader.readAsArrayBuffer(file)
     reader.onload = (e) => {
@@ -88,7 +91,7 @@ export const importFile = async (file: File, open?: boolean) => {
     }
   } else {
     try {
-      const newData = await decompressFromZip<Portrait>(file, Raw)
+      const newData = await decompressFromZip<Portrait>(file, KEY.RAW_NAME)
       const time = Date.now()
       newData.time = time
       newData.id = time
@@ -112,10 +115,21 @@ export const importFile = async (file: File, open?: boolean) => {
       }
     } catch {
       popupManager.open('confirm', {
-        text: ['该文件可能不是由影神图生成器导出或内容已被修改']
+        text: ['该文件可能不是由影神图生成器生成或内容已被修改']
       })
     }
   }
+}
+
+export const exportFile = () => {
+  const blob = createDownloadFile(data.list)
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `影神图 - ${new Date().toLocaleString()}${KEY.FILE_ACCEPT}`
+  a.click()
+  a.remove()
+  URL.revokeObjectURL(url)
 }
 
 export const createScreenshot = (dom?: HTMLElement | null) => {
@@ -125,7 +139,10 @@ export const createScreenshot = (dom?: HTMLElement | null) => {
   popupManager.open('loading')
   nextTick(() => {
     if (dom) {
-      if (!current.value) return
+      if (!current.value) {
+        popupManager.close('loading')
+        return
+      }
 
       screenshot(
         dom,
@@ -134,14 +151,14 @@ export const createScreenshot = (dom?: HTMLElement | null) => {
           download: setting.download,
           data: {
             raw: JSON.stringify(toRaw(current.value)),
-            filename: Raw
+            filename: KEY.RAW_NAME
           }
         },
         { pixelRatio: setting.quality }
       )
         .catch(() => {
           popupManager.open('confirm', {
-            text: ['图片保存失败']
+            text: ['影神图保存失败']
           })
         })
         .finally(() => {

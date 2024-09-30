@@ -22,7 +22,7 @@ export const loadDatabase = () => {
       })
     }, 30 * 1000)
 
-    createDatabase('wukong-portraits', '影神图')
+    createDatabase(KEY.DATABASE_NAME, '影神图')
       .add({
         data: data,
         key: 'list',

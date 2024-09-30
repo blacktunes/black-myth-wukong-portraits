@@ -1,6 +1,7 @@
-import { state } from '@/store/data'
+import { current } from '@/store/data'
+import { state } from '@/store/setting'
 import { popupManager } from './popup'
-import { startScreenshot } from './portraits'
+import { deleteItem, startScreenshot } from './portraits'
 
 let flag = false
 
