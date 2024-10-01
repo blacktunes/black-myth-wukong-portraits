@@ -103,13 +103,19 @@ export const imageEdit = () => {
 
 export const deleteItem = () => {
   return new Promise<void>((resolve) => {
-    const id = current.value?.id
+    if (!current.value) return
+    const id = current.value.id
+    const key = current.value.type
     const index = data.list.findIndex((item) => item.id === id)
     if (id !== -1) {
       popupManager.open('confirm', {
         text: ['是否删除该影神图？'],
         fn: () => {
           data.list.splice(index, 1)
+          const group = list.value.get(key)
+          if (group && group.length === 0) {
+            state.group = ''
+          }
           resolve()
         }
       })

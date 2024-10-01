@@ -78,11 +78,7 @@ const menu = [
   {
     name: '精怪除名',
     fn: () => {
-      const group = list.value.get(current.value!.type)
       deleteItem().then(() => {
-        if (group && group.length === 0) {
-          state.group = ''
-        }
         popupManager.close('data')
       })
     }
