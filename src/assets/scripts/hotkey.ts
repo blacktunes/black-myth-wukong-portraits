@@ -55,7 +55,7 @@ export const hotkey = () => {
         return
       case 'Delete':
         if (popupManager.hasPopup() || state.window === 'setting' || !current.value) return
-        deleteItem(current.value.id)
+        deleteItem()
         return
       case 'Enter':
         popupManager.currentComponentConfirm()

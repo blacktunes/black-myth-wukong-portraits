@@ -47,7 +47,7 @@ defineProps<{
     background url('@/assets/images/提示按钮.webp')
     background-size 100% 100%
     transition 0.3s
-    mask-position 120% 0
+    mask-position 115% 0
     inset 0
     mask-image linear-gradient(to right, #000, #000, 50%, transparent 60%)
     mask-size 200% 100%
@@ -55,7 +55,6 @@ defineProps<{
 
   span
     z-index 2
-    transition 0.3s
 
   &:hover
     color #000

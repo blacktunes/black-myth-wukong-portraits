@@ -20,6 +20,7 @@
               class="label"
               @click.stop="onLabelClick(group[0])"
             >
+              <div class="group-bg"></div>
               <span class="ellipsis">{{ group[0] }}</span>
               <Arrow v-show="group[1].length > 0" />
             </div>
@@ -33,6 +34,7 @@
                 @click="state.ID = item.id"
                 @contextmenu.stop.prevent="popupManager.open('data')"
               >
+                <div class="item-bg"></div>
                 <span class="ellipsis">{{ item.name }}</span>
               </div>
             </div>
@@ -185,18 +187,17 @@ const preprocessText = (text: string) => {
 </script>
 
 <style lang="stylus" scoped>
+@import '../../assets/styles/function.styl'
+
 group_select()
-  background url('@/assets/images/分组按钮.webp')
-  background-position 100% 0
-  background-size 100%
-  background-repeat no-repeat
   color #000
 
+  .group-bg
+    mask-position 0 0
+
 item_select()
-  background url('@/assets/images/按钮.webp')
-  background-position -10px 0
-  background-size 100%
-  background-repeat no-repeat
+  .item-bg
+    mask-position 0 0
 
   span
     color #000
@@ -245,6 +246,7 @@ item_select()
           opacity 1
 
       .label
+        position relative
         display flex
         justify-content space-between
         align-items center
@@ -256,10 +258,18 @@ item_select()
         background linear-gradient(to right, #211f1f, transparent 90%)
         font-size 48px
 
+        .group-bg
+          z-index 1
+          mask_image('@/assets/images/分组按钮.webp')
+          background-position 100% 0
+
         span
+          z-index 2
           width 400px
+          transition color 0.3s
 
         .icon
+          z-index 2
           width 35px
           height 35px
 
@@ -274,6 +284,7 @@ item_select()
         transition max-height 0.2s, opacity 0.2s
 
         .item
+          position relative
           display flex
           align-items center
           box-sizing border-box
@@ -284,8 +295,15 @@ item_select()
           background linear-gradient(to right, rgba(31, 31, 31, 0.5), transparent 90%)
           font-size 40px
 
+          .item-bg
+            z-index 1
+            mask_image('@/assets/images/按钮.webp')
+            background-position -10px 0
+
           span
+            z-index 2
             width 400px
+            transition color 0.3s
 
         .select
           item_select()

@@ -31,7 +31,7 @@ import {
   typeEdit
 } from '@/assets/scripts/portraits'
 import Window from '@/components/Common/Window.vue'
-import { current, list } from '@/store/data'
+import { current } from '@/store/data'
 import { state } from '@/store/setting'
 
 const props = defineProps<{

@@ -63,9 +63,9 @@
 </template>
 
 <script lang="ts" setup>
-import log from '@/assets/data/log';
-import Btn from '../Common/Btn.vue';
-import Window from '../Common/Window.vue';
+import log from '@/assets/data/log'
+import Btn from '../Common/Btn.vue'
+import Window from '../Common/Window.vue'
 
 const props = defineProps<{
   name: string
@@ -116,7 +116,7 @@ ul
     font-size 50px
 
   .text
-    margin-top 5px
+    margin 10px 0 20px 0
 
     .label
       margin-bottom 10px
