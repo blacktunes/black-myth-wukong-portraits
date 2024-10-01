@@ -39,9 +39,9 @@
 </template>
 
 <script lang="ts" setup>
-import Btn from '@/components/Common/Btn.vue';
-import Window from '@/components/Common/Window.vue';
-import { callback, data } from './data';
+import Btn from '@/components/Common/Btn.vue'
+import Window from '@/components/Common/Window.vue'
+import { callback, data } from './data'
 
 const inputDom = ref<HTMLInputElement | null>(null)
 
