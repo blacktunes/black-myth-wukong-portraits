@@ -31,7 +31,7 @@
                 :class="{ select: state.ID === item.id }"
                 @mouseenter="state.ID = item.id"
                 @click="state.ID = item.id"
-                @contextmenu.stop.prevent="deleteItem(item.id)"
+                @contextmenu.stop.prevent="popupManager.open('data')"
               >
                 <span class="ellipsis">{{ item.name }}</span>
               </div>
@@ -55,14 +55,14 @@
         </div>
         <span
           class="hover"
-          @click.stop="onTitleClick"
+          @click.stop="titleEdit"
           >{{ current.name }}</span
         >
       </div>
       <div class="line"></div>
       <div
         class="info hover"
-        @click.stop="onInfoClick"
+        @click.stop="infoEdit"
         :style="{ overflow: state.screenshot ? 'hidden' : undefined }"
         v-dompurify-html="preprocessText(current.info)"
         ref="infoDom"
@@ -77,7 +77,7 @@
       <div
         class="text hover"
         :style="{ overflow: state.screenshot ? 'hidden' : undefined }"
-        @click.stop="onTextClick"
+        @click.stop="textEdit"
         v-dompurify-html="preprocessText(current.text)"
         ref="textDom"
       ></div>
@@ -105,7 +105,7 @@
     >
       <div
         class="image hover"
-        @click.stop="imageChange"
+        @click.stop="imageEdit"
       >
         <img
           v-if="current.image"
@@ -128,7 +128,7 @@
 import { emitter } from '@/assets/scripts/event'
 import { createScreenshot } from '@/assets/scripts/file'
 import { popupManager } from '@/assets/scripts/popup'
-import { deleteItem } from '@/assets/scripts/portraits'
+import { imageEdit, infoEdit, textEdit, titleEdit } from '@/assets/scripts/portraits'
 import { current, list } from '@/store/data'
 import { state } from '@/store/setting'
 import { Arrow } from '../Common/Icon'
@@ -173,53 +173,6 @@ onUnmounted(() => {
 const onLabelClick = (label: string) => {
   if (list.value.get(label)?.length === 0) return
   state.group === label ? (state.group = '') : (state.group = label)
-}
-
-const onTitleClick = () => {
-  if (!current.value) return
-  popupManager
-    .open('input', {
-      title: '精怪名',
-      placeholder: '???',
-      defaultText: current.value.name,
-      required: false
-    })
-    .then((name) => {
-      if (name !== null) current.value!.name = name
-    })
-}
-
-const onInfoClick = () => {
-  if (!current.value) return
-  popupManager
-    .open('input', {
-      title: '精怪简述',
-      defaultText: current.value.info,
-      textarea: true
-    })
-    .then((info) => {
-      if (info !== null) current.value!.info = info
-    })
-}
-
-const onTextClick = () => {
-  if (!current.value) return
-  popupManager
-    .open('input', {
-      title: '精怪详述',
-      defaultText: current.value.text,
-      textarea: true
-    })
-    .then((text) => {
-      if (text !== null) current.value!.text = text
-    })
-}
-
-const imageChange = () => {
-  popupManager.open('cropper', { aspectRatio: 0.7, maxWidth: 1280 }).then((res) => {
-    if (!current.value) return
-    current.value.image = res.base64
-  })
 }
 
 const preprocessText = (text: string) => {

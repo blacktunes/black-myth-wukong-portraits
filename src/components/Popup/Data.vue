@@ -3,47 +3,36 @@
     :index
     @close="close"
   >
-    <div class="select">
-      <div class="title">{{ data.title }}</div>
+    <div class="data">
+      <div class="title">编辑</div>
       <div class="menu-list">
         <div
-          class="item hover"
-          :class="{ highlight: item === data.select }"
-          v-for="item in data.list"
-          :key="item"
-          @click.stop="data.select = item"
+          v-for="(item, index) in menu"
+          :key="index"
+          class="menu hover"
+          @click.stop="item.fn ? item.fn() : undefined"
         >
           <div class="bg"></div>
-          <span>{{ item }}</span>
+          <span>{{ item.name }}</span>
         </div>
-        <div
-          v-if="data.extra"
-          class="item hover"
-          style="font-weight: bold"
-          @click.stop="data.extra.fn"
-        >
-          <span>{{ data.extra.name }}</span>
-        </div>
-      </div>
-      <div class="footer">
-        <Btn
-          name="确认"
-          :disable="!data.select"
-          @click="onConfirmlClick"
-        />
-        <Btn
-          name="取消"
-          @click="close"
-        />
       </div>
     </div>
   </Window>
 </template>
 
 <script lang="ts" setup>
-import Btn from '@/components/Common/Btn.vue'
+import { popupManager } from '@/assets/scripts/popup'
+import {
+  deleteItem,
+  imageEdit,
+  infoEdit,
+  textEdit,
+  titleEdit,
+  typeEdit
+} from '@/assets/scripts/portraits'
 import Window from '@/components/Common/Window.vue'
-import { callback, data } from './data'
+import { current, list } from '@/store/data'
+import { state } from '@/store/setting'
 
 const props = defineProps<{
   name: string
@@ -58,23 +47,57 @@ const close = () => {
   emits('close', props.name)
 }
 
-const onConfirmlClick = () => {
-  data.fn?.()
-  close()
-  return true
-}
-
-callback.confirm = onConfirmlClick
+const menu = [
+  {
+    name: '修改名字',
+    fn: titleEdit
+  },
+  {
+    name: '修改简述',
+    fn: infoEdit
+  },
+  {
+    name: '修改详述',
+    fn: textEdit
+  },
+  {
+    name: '修改画像',
+    fn: imageEdit
+  },
+  {
+    name: '修改分类',
+    fn: () => {
+      typeEdit(current.value?.type).then((type) => {
+        if (current.value) {
+          current.value.type = type
+          state.group = type
+        }
+      })
+    }
+  },
+  {
+    name: '精怪除名',
+    fn: () => {
+      const group = list.value.get(current.value!.type)
+      deleteItem().then(() => {
+        if (group && group.length === 0) {
+          state.group = ''
+        }
+        popupManager.close('data')
+      })
+    }
+  }
+]
 </script>
 
 <style lang="stylus" scoped>
-.select
+.data
   display flex
   flex-direction column
   justify-content space-between
   min-height 500px
   max-height 1600px
-  width 1200px
+  width 1000px
   text-align center
 
   .title
@@ -91,7 +114,7 @@ callback.confirm = onConfirmlClick
     margin 30px 0 20px
     background rgba(199, 199, 199, 0.3)
 
-    .item
+    .menu
       position relative
       display flex
       flex-shrink 0
@@ -105,6 +128,15 @@ callback.confirm = onConfirmlClick
       background-size 100% 120%
       transition color 0.3s
       user-select none
+
+      &:hover
+        filter invert(1)
+
+        .bg
+          mask-position 0 0
+
+        span
+          color #fff
 
       .bg
         position absolute
@@ -121,18 +153,5 @@ callback.confirm = onConfirmlClick
       span
         z-index 2
         text-align center
-        font-size 46px
-
-    .highlight
-      filter invert(1)
-
-      .bg
-        mask-position 0 0
-
-      span
-        color #fff
-
-  .footer
-    display flex
-    margin-top 30px
+        font-size 50px
 </style>

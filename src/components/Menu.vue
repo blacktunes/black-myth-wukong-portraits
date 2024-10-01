@@ -48,56 +48,29 @@
 <script lang="ts" setup>
 import { windowChange } from '@/assets/scripts/hotkey'
 import { popupManager } from '@/assets/scripts/popup'
-import { startScreenshot } from '@/assets/scripts/portraits'
-import { data, list } from '@/store/data'
+import { startScreenshot, typeEdit } from '@/assets/scripts/portraits'
+import { data } from '@/store/data'
 import { state } from '@/store/setting'
 import Keyboard from './Common/Keyboard.vue'
 
-const createPortrait = (type: string) => {
-  popupManager.open('cropper', { aspectRatio: 0.7, maxWidth: 1280 }).then((res) => {
-    const time = Date.now()
-    const portrait: Portrait = {
-      id: time,
-      name: res.raw.name.split('.')[0] ?? '???',
-      type,
-      info: '空。',
-      text: '空。',
-      image: res.base64,
-      time
-    }
-    data.list.push(portrait)
-    state.group = type
-    state.ID = time
+const createPortrait = () => {
+  typeEdit('小妖').then((type) => {
+    popupManager.open('cropper', { aspectRatio: 0.7, maxWidth: 1280 }).then((res) => {
+      const time = Date.now()
+      const portrait: Portrait = {
+        id: time,
+        name: res.raw.name.split('.')[0] ?? '???',
+        type,
+        info: '空。',
+        text: '空。',
+        image: res.base64,
+        time
+      }
+      data.list.push(portrait)
+      state.group = type
+      state.ID = time
+    })
   })
-}
-
-const addPortrait = () => {
-  popupManager
-    .open('select', {
-      title: '精怪分类',
-      list: Array.from(list.value.keys()),
-      select: '小妖',
-      extra: {
-        name: '新增',
-        fn: () => {
-          popupManager
-            .open('input', {
-              title: '新增分类'
-            })
-            .then((type) => {
-              if (type !== null) {
-                createPortrait(type)
-                popupManager.close('select')
-              }
-            })
-        }
-      }
-    })
-    .then((type) => {
-      if (type) {
-        if (type) createPortrait(type)
-      }
-    })
 }
 
 interface MenuBase {
@@ -138,7 +111,7 @@ const menu: (
     type: 'other',
     name: '编撰',
     tip: '编写影神图',
-    fn: addPortrait
+    fn: createPortrait
   },
   {
     type: 'other',
