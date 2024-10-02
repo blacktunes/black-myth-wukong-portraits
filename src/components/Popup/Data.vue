@@ -87,6 +87,8 @@ const menu = [
 </script>
 
 <style lang="stylus" scoped>
+@import '../../assets/styles/function.styl'
+
 .data
   display flex
   flex-direction column
@@ -135,16 +137,8 @@ const menu = [
           color #fff
 
       .bg
-        position absolute
-        z-index 1
-        background url('@/assets/images/毛笔按钮.webp')
+        mask_image('@/assets/images/毛笔按钮.webp')
         background-size 100% 100%
-        transition 0.3s
-        mask-position 120% 0
-        inset 0
-        mask-image linear-gradient(to right, #000, #000, 50%, transparent 60%)
-        mask-size 200% 100%
-        mask-repeat no-repeat
 
       span
         z-index 2

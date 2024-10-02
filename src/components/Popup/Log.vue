@@ -124,7 +124,7 @@ ul
 
     .info
       color #666
-      font-size 36px
+      font-size 32px
 
 :deep(a)
   color #949393
@@ -145,7 +145,7 @@ ul
       font-size 50px
 
     .info
-      font-size 46px
+      font-size 40px
 
 .text-highlight
   .label

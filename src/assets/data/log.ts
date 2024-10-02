@@ -11,6 +11,7 @@ const log: LogData[] = [
       
       {
         text: '优化动画效果',
+        info: '可能存在兼容性问题'
       },
       {
         text: '增加影神图的管理菜单',

@@ -21,6 +21,8 @@ defineProps<{
 </script>
 
 <style lang="stylus" scoped>
+@import '../../assets/styles/function.styl'
+
 .disable
   pointer-events none
 
@@ -42,16 +44,7 @@ defineProps<{
   user-select none
 
   .bg
-    position absolute
-    z-index 1
-    background url('@/assets/images/提示按钮.webp')
-    background-size 100% 100%
-    transition 0.3s
-    mask-position 115% 0
-    inset 0
-    mask-image linear-gradient(to right, #000, #000, 50%, transparent 60%)
-    mask-size 200% 100%
-    mask-repeat no-repeat
+    mask_image('@/assets/images/提示按钮.webp')
 
   span
     z-index 2
