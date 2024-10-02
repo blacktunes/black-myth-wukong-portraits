@@ -6,6 +6,7 @@
     <Index />
     <Menu />
     <Shadow />
+    <Tip />
   </Main>
 </template>
 
@@ -15,4 +16,5 @@ import { popupManager } from './assets/scripts/popup'
 import Index from './components/Index.vue'
 import Menu from './components/Menu.vue'
 import Shadow from './components/Shadow.vue'
+import Tip from './components/Tip.vue'
 </script>

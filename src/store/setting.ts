@@ -25,9 +25,11 @@ export const state: {
 export const setting: {
   download: boolean
   quality: number
+  tip: boolean
 } = reactive({
   download: true,
-  quality: 1
+  quality: 1,
+  tip: true
 })
 
 setLocalStorage(setting, KEY.SETTING_KEY)

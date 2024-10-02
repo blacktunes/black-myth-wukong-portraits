@@ -1,5 +1,5 @@
 import { current } from '@/store/data'
-import { state } from '@/store/setting'
+import { setting, state } from '@/store/setting'
 import { popupManager } from './popup'
 import { deleteItem, startScreenshot } from './portraits'
 
@@ -29,7 +29,7 @@ export const hotkey = () => {
   })
 
   document.addEventListener('keydown', async (e) => {
-    if (popupManager.isLoading()) return
+    if (popupManager.isLoading() || setting.tip) return
     switch (e.key) {
       case 'Tab':
         e.preventDefault()
