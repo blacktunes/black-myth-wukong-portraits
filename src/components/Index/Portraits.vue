@@ -141,15 +141,22 @@ const ellipsis = reactive({
   info: false,
   text: false
 })
-watch(current, async () => {
-  await nextTick()
-  if (infoDom.value) {
-    ellipsis.info = infoDom.value.scrollHeight - infoDom.value.offsetHeight > 30
+watch(
+  current,
+  async () => {
+    await nextTick()
+    if (infoDom.value) {
+      ellipsis.info = infoDom.value.scrollHeight - infoDom.value.offsetHeight > 30
+    }
+    if (textDom.value) {
+      ellipsis.text = textDom.value.scrollHeight - textDom.value.offsetHeight > 50
+    }
+  },
+  {
+    deep: true,
+    immediate: true
   }
-  if (textDom.value) {
-    ellipsis.text = textDom.value.scrollHeight - textDom.value.offsetHeight > 50
-  }
-})
+)
 
 const infoDom = ref<HTMLElement | null>(null)
 const infoEllipsis = computed(() => {

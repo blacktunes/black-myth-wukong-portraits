@@ -6,7 +6,7 @@ import App from './App.vue'
 import { loadDatabase } from './assets/scripts/database'
 import { hotkey } from './assets/scripts/hotkey'
 import { showFirstItem } from './assets/scripts/portraits'
-import { initLog, updateCheck } from './assets/scripts/update'
+import { logCheck, updateCheck } from './assets/scripts/update'
 
 analytics('G-10B19F2P0B', import.meta.env.MODE === 'development')
 
@@ -20,7 +20,7 @@ createApp(App)
   .mount('#app')
 
 hotkey()
-initLog()
+logCheck()
 loadDatabase().then(() => {
   showFirstItem()
   updateCheck()
