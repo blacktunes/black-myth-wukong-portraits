@@ -51,10 +51,10 @@ import { setting } from '@/store/setting'
     align-items center
 
     &:nth-child(1)
-      left 790px
+      left 785px
 
     &:nth-child(2)
-      left 1050px
+      left 1045px
 
     &:nth-child(3)
       top unset

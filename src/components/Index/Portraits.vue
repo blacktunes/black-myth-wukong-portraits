@@ -90,10 +90,6 @@
       >
         <span>……</span>
       </div>
-      <div
-        class="placeholder"
-        v-show="state.expand"
-      ></div>
       <Keyboard
         keyboard="T"
         :text="state.expand ? '收起' : '展开'"
@@ -141,22 +137,32 @@ const height = computed(() => {
   return `${list.value.get(state.group)!.length * 90 + 25}px`
 })
 
+const ellipsis = reactive({
+  info: false,
+  text: false
+})
+watch(current, async () => {
+  await nextTick()
+  if (infoDom.value) {
+    ellipsis.info = infoDom.value.scrollHeight - infoDom.value.offsetHeight > 30
+  }
+  if (textDom.value) {
+    ellipsis.text = textDom.value.scrollHeight - textDom.value.offsetHeight > 50
+  }
+})
+
 const infoDom = ref<HTMLElement | null>(null)
 const infoEllipsis = computed(() => {
   if (state.expand) return false
   if (!infoDom.value) return false
-  if (infoDom.value.scrollHeight - infoDom.value.offsetHeight > 20) {
-    return true
-  }
+  return ellipsis.info
 })
 
 const textDom = ref<HTMLElement | null>(null)
 const textEllipsis = computed(() => {
   if (state.expand) return false
   if (!textDom.value) return false
-  if (textDom.value.scrollHeight - textDom.value.offsetHeight > 20) {
-    return true
-  }
+  return ellipsis.text
 })
 
 const dom = ref<HTMLElement | null>(null)
@@ -344,7 +350,7 @@ item_select()
       flex-shrink 0
       overflow hidden
       margin-top 10px
-      max-height 255px
+      max-height 250px
       color #656464
       font-size 40px
       line-height 60px
@@ -353,7 +359,7 @@ item_select()
       flex-shrink 0
       overflow hidden
       margin-top 50px
-      max-height 340px
+      max-height 335px
       color #b8b8b8
       font-size 40px
       line-height 55px
@@ -366,16 +372,16 @@ item_select()
     .info
       overflow auto
       margin-bottom 50px
-      max-height 400px
+      max-height 370px
       mask-image linear-gradient(to bottom, #000 calc(100% - 20px), transparent)
 
     .text
       position relative
-      overflow auto
+      flex 1
       overflow auto
       margin-top 0
       padding 30px 0
-      max-height 450px
+      max-height unset
       mask-image linear-gradient(to bottom, #000 calc(100% - 60px), transparent)
 
       &:before
@@ -385,9 +391,6 @@ item_select()
         width 80%
         border-top 4px solid rgba(65, 65, 65, 0.4)
         content ''
-
-    .placeholder
-      flex 1
 
   .overlay
     mix-blend-mode overlay
