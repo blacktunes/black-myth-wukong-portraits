@@ -4,12 +4,6 @@
       class="tip"
       v-if="setting.tip"
     >
-      <Teleport to="body">
-        <div
-          class="mask"
-          @click.stop="setting.tip = false"
-        ></div>
-      </Teleport>
       <div class="item">
         <div class="line"></div>
         <span>保存影神图</span>
@@ -32,10 +26,6 @@ import { setting } from '@/store/setting'
 </script>
 
 <style lang="stylus" scoped>
-.mask
-  position fixed
-  inset 0
-
 .tip
   position absolute
   z-index 10

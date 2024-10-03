@@ -25,7 +25,11 @@ export const hotkey = () => {
   document.addEventListener('click', (e) => {
     if (popupManager.isLoading()) return
     if ((e.target as HTMLElement).tagName.toLowerCase() === 'a') return
-    popupManager.closeCurrentComponent()
+    if (popupManager.hasPopup()) {
+      popupManager.closeCurrentComponent()
+    } else if (setting.tip) {
+      setting.tip = false
+    }
   })
 
   document.addEventListener('keydown', async (e) => {
